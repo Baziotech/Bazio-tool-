@@ -1,0 +1,107 @@
+import requests
+
+class OSINTTool:
+    def __init__(self):
+        # Remplacez ces URL par de vraies API
+        self.email_lookup_api = "https://api.emaillookup.com/v1/"
+        self.phone_lookup_api = "https://api.phonelookup.com/v1/"
+        self.ip_lookup_api = "https://api.iplookup.com/v1/"
+        self.database_search_api = "https://api.database.com/v1/"  # Fictive
+        self.username_tracker_api = "https://api.usertrack.com/v1/"  # Fictive
+
+    def email_lookup(self, email):
+        response = requests.get(f"{self.email_lookup_api}{email}")
+        return response.json() if response.status_code == 200 else {"error": "Unable to lookup email"}
+
+    def phone_lookup(self, phone):
+        response = requests.get(f"{self.phone_lookup_api}{phone}")
+        return response.json() if response.status_code == 200 else {"error": "Unable to lookup phone number"}
+
+    def ip_lookup(self, ip):
+        response = requests.get(f"{self.ip_lookup_api}{ip}")
+        return response.json() if response.status_code == 200 else {"error": "Unable to lookup IP address"}
+
+    def search_in_database(self, query):
+        response = requests.get(f"{self.database_search_api}{query}")
+        return response.json() if response.status_code == 200 else {"error": "Unable to search in database"}
+
+    def username_tracker(self, username):
+        response = requests.get(f"{self.username_tracker_api}{username}")
+        return response.json() if response.status_code == 200 else {"error": "Unable to track username"}
+
+    def dox_create(self, target_info):
+        with open(f"{target_info['name']}_dox.txt", "w") as file:
+            file.write("Dox Document\n")
+            file.write("---------------\n")
+            for key, value in target_info.items():
+                file.write(f"{key}: {value}\n")
+        return {"success": True, "message": "Dox document created successfully."}
+
+    def discord_token_info(self, token):
+        # Simuler l'extraction d'informations à partir d'un token Discord
+        # Remplacer ceci par la logique d'accès à une API si nécessaire
+        # Pour l'exemple, nous allons retourner des données fictives
+        return {
+            "token": token,
+            "user": {
+                "username": "example_user",
+                "id": "123456789012345678",
+                "email": "user@example.com",
+                "status": "active"
+            },
+            "error": None
+        }
+
+def print_in_violet(text):
+    print("\033[95m" + text + "\033[0m")
+
+def main():
+    tool = OSINTTool()
+    
+    print_in_violet("Welcome to BAZIO TOOL")
+    while True:
+        print_in_violet("\n1. Email Lookup\n2. Phone Number Lookup\n3. IP Lookup\n4. Search In Database\n5. Username Tracker\n6. Dox Create\n7. Discord Token Info\n8. Exit")
+        choice = input("Select an option: ")
+
+        if choice == '1':
+            email = input("Enter the email address: ")
+            result = tool.email_lookup(email)
+            print_in_violet(str(result))
+        elif choice == '2':
+            phone = input("Enter the phone number: ")
+            result = tool.phone_lookup(phone)
+            print_in_violet(str(result))
+        elif choice == '3':
+            ip = input("Enter the IP address: ")
+            result = tool.ip_lookup(ip)
+            print_in_violet(str(result))
+        elif choice == '4':
+            query = input("Enter the search query: ")
+            result = tool.search_in_database(query)
+            print_in_violet(str(result))
+        elif choice == '5':
+            username = input("Enter the username: ")
+            result = tool.username_tracker(username)
+            print_in_violet(str(result))
+        elif choice == '6':
+            name = input("Enter the target's name: ")
+            email = input("Enter the target's email: ")
+            phone = input("Enter the target's phone number: ")
+            target_info = {
+                "name": name,
+                "email": email,
+                "phone": phone,
+            }
+            result = tool.dox_create(target_info)
+            print_in_violet(str(result))
+        elif choice == '7':
+            token = input("Enter the Discord token: ")
+            result = tool.discord_token_info(token)
+            print_in_violet(str(result))
+        elif choice == '8':
+            break
+        else:
+            print_in_violet("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    main()
